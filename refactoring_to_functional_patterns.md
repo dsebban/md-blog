@@ -1,17 +1,16 @@
 # Refactoring to functional patterns in Scala
 
 If you have a background in Java like me you probably read
-[Refactoring To Patterns](https://industriallogic.com/xp/refactoring/), It's a very cool book about refactorings, it shows how to refactor OO code step by step and getting to a full blown GoF design pattern at then end .
-It made a big impact on me at the time, you get the feeling that code is alive and wants to be rearanged this way, patterns emerge naturally.
+[Refactoring To Patterns](https://industriallogic.com/xp/refactoring/). It's a very cool book about refactorings that shows you how to refactor Object Orientated code step by step and get and eventually reach full blown Gang of Four design patterns. It had a huge impact on me at the time. It left me with the feeling that code is alive and wants to be rearranged this way, and that patterns emerge naturally.
 
-Fast forward 10 years later, I now work in a very cool startup [Bigpanda](https://bigpanda.io/careers/) and we use Scala and Functional programming for our back end services.
-Working with FP is very different and I would say way easier, no more complicated class hierarchies, no more complicated patterns, only functions, functions, functions.
+Fast forward 10 years, and I work in a very cool startup ([Bigpanda](https://bigpanda.io/careers/)) where we use Scala and Functional programming for our back end services.
+Working with FP is very different, and in my opinion far easier. The are no more complicated class hierarchies and no more complicated patterns, only functions, functions, functions. If GoF design patterns are no longer our destination, then the refactoring steps we must take are very different. 
 
-In this post I will build from simple refactorings to more advanced ones using the State monad and Writer monad (which are functional design patterns)
+In this post I'll introduce you to some approaches to refactoring functional code. I will build from simple refactorings to more advanced ones using the State and Writer monads - functional design patterns.
 
 ## Make sure you have a full suite of tests with good coverage
 
-Refactoring without tests is like jumping without a safety net, sbt as a very useful continuous test runner :
+Refactoring without tests is like jumping without a safety net. You can use sbt as a very useful continuous test runner:
 
 ```scala
 
@@ -19,7 +18,7 @@ Refactoring without tests is like jumping without a safety net, sbt as a very us
 
 ```
 
-Each time you save your file it will recompile it and rerun only the failing previous tests 
+Each time you save your file it will recompile it and rerun only the previously failing tests 
 
 
 ## Eliminate primitive types with value classes
@@ -37,39 +36,37 @@ case class Symbol(name: String) extends AnyVal
 case class Exchange(name: String) extends AnyVal
 case class Price(value: Long) extends AnyVal
 case class Timestamp(ts: Long) extends AnyVal
-case class Price(value: Double) extends AnyVal
 
 def buy2(lastPrice: Price, symbol: Symbol, exchange: Exchange): (Price, Timestamp) = ???
 ```
 
 We have a package called `types` and we will put all our value classes in `values.scala` file
-We will also add `Ordering` implicits there  
+We will also add `Ordering` implicits there.
 
 ```scala
 implicit val timestampOrdering: Ordering[Timestamp] = Ordering.by(_.ts)
 ```
+<!--- Please explain the benefits of this pattern. Also maybe mention that AnyVals 'compile out'  --->
 
 ## Rewrite on the side and then switch the functions
 
-Note that I did not start deleting old code, first I write the new function on the side, make sure it compiles
-and then I will switch the old ones and make sure the tests pass, this is very handy trick in order to backtrack 
+Typically I do not starte by deleting old code. First I write the new function on the side, make sure it compiles
+and then switch the old ones and make sure the tests pass. This is very handy trick to let you backtrack 
 quickly if you have an error somewhere.
 
 ## Align the types between functions
 
-If your functions compose together in a natural way, it means you found the right level of abstraction where you should be.
+If your functions compose together in a natural way, it means that you have found the right level of abstraction .
 
 Keep them small and focused on one thing, add type annotations for the return types to increase readability.
 
-
-If you have to do hard work with the type transformations to be able to compose your functions together, 
-one solution : 
+If you find that you need to work hard with type transformations to be able to compose your functions together then try this: 
 
 - Inline, inline, inline, and retry.
 
-After a while you get that hang of it and your functions will be focused and compose together, you can also do some upfront design.
+After a while you get that hang of it and your functions will be focused and compose together. You can also do some upfront design.
 
-You can watch [A Type Driven Approach to Functional Design](https://www.infoq.com/presentations/Type-Functional-Design#.WgQgsvnDY9Q), it's in haskell
+You can watch [A Type Driven Approach to Functional Design](https://www.infoq.com/presentations/Type-Functional-Design#.WgQgsvnDY9Q), it's in Haskell
 but it's very relevant and will give you a sense of how to design functions that compose together.
 
 ## Use State monad for functions that need previously computed values 

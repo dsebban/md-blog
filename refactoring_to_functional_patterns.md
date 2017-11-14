@@ -56,7 +56,7 @@ quickly if you have an error somewhere.
 
 ## Align the types between functions
 
-If your functions compose together in a natural way, it means that you have found the right level of abstraction .
+If your functions compose together in a natural way, it means that you have found the right level of abstraction.
 
 Keep them small and focused on one thing, add type annotations for the return types to increase readability.
 
@@ -66,12 +66,11 @@ If you find that you need to work hard with type transformations to be able to c
 
 After a while you get that hang of it and your functions will be focused and compose together. You can also do some upfront design.
 
-You can watch [A Type Driven Approach to Functional Design](https://www.infoq.com/presentations/Type-Functional-Design#.WgQgsvnDY9Q), it's in Haskell
-but it's very relevant and will give you a sense of how to design functions that compose together.
+Personally I found [A Type Driven Approach to Functional Design](https://www.infoq.com/presentations/Type-Functional-Design#.WgQgsvnDY9Q) helpful. It's in Haskell but it's very relevant and will give you a sense of how to design functions that compose together.
 
 ## Use State monad for functions that need previously computed values 
 
-Let's define some types to work with :
+Let's define some types to work with:
 
 ```scala
 sealed abstract class CreditRating(val rating: Int)
@@ -85,9 +84,7 @@ case class PriceEvent(symbol: Symbol, price: Price, ts: Timestamp)
 
 ```
 
-In any meaningfull service you will need previously computed data, also you
-will want to persist it in case you crash or restart your app. This lead
-to satefull functions
+In any meaningful service you will need previously computed data. You'll also want to persist it in case you crash or restart your app. This lead to sateful functions.
 
 In order to rate a stock we need the previous prices and rating, this usually leads to
 this type of long ugly parameter list.

@@ -50,7 +50,7 @@ implicit val timestampOrdering: Ordering[Timestamp] = Ordering.by(_.ts)
 
 ## Rewrite on the side and then switch the functions
 
-Typically I do not starte by deleting old code. First I write the new function on the side, make sure it compiles
+Typically I do not start by deleting old code. First I write the new function on the side, make sure it compiles
 and then switch the old ones and make sure the tests pass. This is very handy trick to let you backtrack 
 quickly if you have an error somewhere.
 

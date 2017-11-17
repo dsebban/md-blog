@@ -1,7 +1,7 @@
 # Refactoring to functional patterns in Scala
 
 If you have a background in Java like me you probably read
-[Refactoring To Patterns](https://industriallogic.com/xp/refactoring/). It's a very cool book about refactorings that shows you how to refactor Object Orientated code step by step and get and eventually reach full blown Gang of Four design patterns. It had a huge impact on me at the time. It left me with the feeling that code is alive and wants to be rearranged this way, and that patterns emerge naturally.
+[Refactoring To Patterns](https://industriallogic.com/xp/refactoring/). It's a very cool book about refactorings that shows you how to refactor Object Orientated code step by step and eventually reach full blown Gang of Four design patterns. It had a huge impact on me at the time. It left me with the feeling that code is alive and wants to be rearranged this way, and that patterns emerge naturally.
 
 Fast forward 10 years, and I work in a very cool startup ([Bigpanda](https://bigpanda.io/careers/)) where we use Scala and Functional programming for our back end services.
 Working with FP is very different, and in my opinion far easier. The are no more complicated class hierarchies and no more complicated patterns, only functions, functions, functions. If GoF design patterns are no longer our destination, then the refactoring steps we must take are very different. 

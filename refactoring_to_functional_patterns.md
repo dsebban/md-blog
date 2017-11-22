@@ -40,13 +40,16 @@ case class Timestamp(ts: Long) extends AnyVal
 def buy2(lastPrice: Price, symbol: Symbol, exchange: Exchange): (Price, Timestamp) = ???
 ```
 
+We now get type safety for primitives and the function signatures are more
+expressive.
+Also value classes will not allocate runtime objects , it will just use the wrapped primitives 
+
 We have a package called `types` and we will put all our value classes in `values.scala` file
 We will also add `Ordering` implicits there.
 
 ```scala
 implicit val timestampOrdering: Ordering[Timestamp] = Ordering.by(_.ts)
 ```
-<!--- Please explain the benefits of this pattern. Also maybe mention that AnyVals 'compile out'  --->
 
 ## Rewrite on the side and then switch the functions
 

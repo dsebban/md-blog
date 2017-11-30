@@ -2,9 +2,11 @@
 
 In order to really understand this syntax, we will define some basic concepts and then relate them together, it should all make sense at the end.
 
-# What is a value ?
+DANIEL: let's work on this intro together. Come sit with me sometime. I think we should explain what we're answering, and the structure of the post.
 
-The simplest concept is a value, values represents raw data, the lowest level abstraction that exists:
+# What is a value?
+
+Values represent raw data. They have the lowest level of abstraction and are the simplest concept that we need to deal with. 
 
 ```scala
 val name = "daniel"
@@ -13,11 +15,11 @@ val oneAndTwoAsTuple = (1,2)
 val oneAndTwoInAList = List(1,2)
 ```
 
-As you see on the right side it's pure date, very simple for your brain.
-For example you can talk to a child and tell him that a toy costs 2$, he would understand that, try now to explain what 
-$ is, you have to go explain currencies and all kind of other complicated concepts.
+Take a look at the right hand side of these examples - it's just data and it's trivial to understand.
 
-# What is a proper type ?
+If a child asks you what your funky BigPanda tshirt costs and you answer $12 then they'll understand what you mean. They'll certainly understand the value in your answer (2). But if they ask you what a dollar is then suddenly things get more complicated. Explaining money and currencies is a bit more tricky. This takes us to types.
+
+# What is a proper type?
 
 ```scala
 scala> val name = "daniel"
@@ -33,17 +35,17 @@ scala> val oneAndTwoInAList = List(1,2)
 oneAndTwoInAList: List[Int] = List(1, 2)
 ```
 
-Look at what the REPL spits as information, it spits types, `String`, `List[Int]`, ...
-There are all proper types, it's a higher level concept, types can be *instantiated* and produce a value. 
-`String` can produce all the string literals you can think up ("a", "ab", ...), if 
-we go back to our currency analogy $ can be instantiated to (2$, 3$, ...) or whatever else you can think up.
+Look at the information the REPL spits out. It keeps telling you about types: `String`, `List[Int]` etc. These are all proper types.
 
-We just jumped one level on the abstraction scale, your brain can still follow, let's move on to the next level.
+Proper types are a higher level concept than values. Let's talk about how they are related: types can be *instantiated* to produce a value and values are a specific *instance* of a type.
+
+`String` can produce all the string literals you can think up ("a", "ab", "algorithmic service operations" etc). If we go back to our pricing example, $ can be instantiated to $2, $3, [$49,000,000](https://bigpanda.io/resources/bigpanda-expands-series-b-funding-49-million/)...) or any other amount.
+
+Moving from values to proper types took us up a level of abstraction. What do we get if we go one higher?
 
 # What is a first-order type ?
 
-In the previous example we said that `List[Int]` is a proper type, but what about
-`List` ?
+In the previous example we said that `List[Int]` is a proper type, but what is`List`?
 
 ```scala
 scala> val l: List = List(1,2,3)
@@ -52,66 +54,73 @@ scala> val l: List = List(1,2,3)
               ^
 ```
 
-This obviously does not compile, `List` in itself is meaningless, it needs something, it misses something: `List[_]` 
-There is a hole , in order to exist you need to fill the hole with a proper type, it's like a parameter to a function. 
+This doesn't compile. The compiler won't let us say that a value is a `List`. It wants us to say that it is a list of something, a `List[_]`.
+ 
+There's slot there. If we want the compiler to give us a type we need it put something in the slot. It's like a parameter to a function that returns a type. There's a name for this special kind of function: a **type constructor**.
 
-It's called a **type constructor**
+You've probably met other **type constructors**: `Option[_]`, `Array[_]`, `Map[_,_]` and friends. Notice that `Map` is a little different; it needs a type for the key and for the value. It has 2 slots for 2 parameters.
 
-Other familiar **type constructor** : `Option[_]`, `Array[_]`, `Map[_,_]`, ...
-Notice that `Map` is the same, it needs a type for the key and the value, it has 2 holes, 2 parameters.
+First-order types are just types (`List`, `Map`, `Array`) that have type constructors (`List[_]`, `Map[_, _]`) that take proper types and produce proper types (`List[Int]`, `Map[String, Int]`). 
 
-You would think, that's the end of it and in a lot of languages like Java that's all you have, but in scala and other functional languages you have on more concept, let's do the last jump
+Going from proper types to first-order types tooks us up a layer of abstraction. In most programming languages you can't abstract any further. However, Scala let's you got a step further.  Let's take that last step and see where it takes us.
 
-# What abstracts over a first-order type ?
+# What abstracts over a first-order type?
 
-As you noticed each abstraction abstracts over the previous one :
+Every step we've taken so far has added an abstraction over the previous abstraction: 
 
 ```scala
-List("a") -> List[String] ->    List      ->          ???
-// value     // proper       //first order   // abstraction over List
+List("a") -> List[String] -> List           -> ???
+// value     proper type     first order type  ???
 ```
 
-In Scala you can abstract over a first-order type with this syntax :
+In Scala you can abstract over a first-order type with this syntax:
+
 
 ```scala
+
 trait WithMap[F[_]] {
 
 }
+
 ```
-Forget about `WithMap` for a second, what is interesting is the `F[_]` syntax, this is the way to say a first-order type with one hole for example `List[_]`, `Option[_]`.
+Let's forget about `WithMap` for a second to focus on the `F[_]` syntax. `F[_]` represents a first-order type with one slot. For example `List[_]` or `Option[_]`.
 
-Now the million dollar question 
 
-- What is `WithMap` ?
+Now the million dollar question: What is `WithMap`?
 
 Answer : **A second-order type**
 
-It's a type which abstracts over types which abstracts over types !!!
+It's a type which abstracts over types which abstract over types!!!
 
-Very inception like, but hopefully you followed until here so it's all clear now.
+Feel like inception, right? Hopefully you followed until here and everything is starting to fall into place.
 
 # Higher kinded types
 
-Let's make things simple, each time you see a type constructor `[_]` 
-this is called a *higher kinded type*
+Let's introduce one more piece of terminology, and then try and clarify how everything fits together.
 
-A type constructor is just a function that takes a type and returns a type.
+A type with a type constructor (ie. a type with `[_]`) is called a *higher kinded type*. A type constructor is just a function that takes a type and returns a type.
 
 Let's do a quick analogy between types and functions :
 
 - A type constructor `List[_]` is just a function of type 
 
 ```scala
+
 T => List[T]
+
 ```
 For example:
 
 ```scala
 String => List[String]
+
 ```
-Given a proper type it will return another proper type you can think about it as a function that works at the type level, a type level function.
+
+Given a proper type it will return another proper type you can think about it as 
+a function that works at the type level, a type level function.
 
 But wait we returned only a proper type, what if we return another first order type : 
+
 
 ```scala
 
@@ -128,7 +137,7 @@ F[_] => WithMap[F[_]]
 ```
 Give a type level function we return another type level function.
 
-This is similar to high order functions: functions that returns functions at the value level this time.
+Higher order functions are functions that returns functions, in the same
 
 # The `*` notation 
 
@@ -137,16 +146,17 @@ The type of a type is called kind and uses `*` as notation to communicate what o
 - `String` is of kind `*` and is Order 0
 
 - `List[_]` is of kind `* -> *` (takes one type and produce a proper type, Order 1) 
-  takes a `String` and produce a List[String]
+   takes a `String` and produce a List[String]
 
 - `Map[_,_]` is of kind: `* -> * -> *` (takes two types and produce a proper type, Order 1) 
   takes a `String,Int` and produce a Map[String,Int]
 
-- `WithMap[F[_]]` of kind : `(* -> *) -> *` (takes a Order 1 type `(* -> *)` and produce a proper type) `WithMap` is thus  Order 2)
+- `WithMap[F[_]]`  of kind : `(* -> *) -> *` (take a Order 1 type `(* -> *)` and produce a proper type, Order 2)
 
-This gives a visual way to talk about kinds.
+This gives a visual way to talk about the type of types.
 
-#[SOULD I DROP THIS ?] Why do I need `F[_]` ?
+
+# Why do I need `F[_]` ?
 
 We abstracted over all the first order types with one hole, we can now
 define common functions between all of them for example :

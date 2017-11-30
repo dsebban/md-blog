@@ -172,9 +172,9 @@ represent (`Option`, `List`)
 
 # Takeaways
 
--`1`, `"a"`, `List(1,2,3)` are values
+- `1`, `"a"`, `List(1,2,3)` are values
 
--`Int`, `String`, List[Int] are proper types 
+- `Int`, `String`, List[Int] are proper types 
 
 - `List[_]`, `Option[_]`  are type constructors, takes a type and construct a new type,
 can be generalized with this syntax `F[_]`

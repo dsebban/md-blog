@@ -5,7 +5,7 @@ I will try to give you an intuition of what it means and how to use it.
 
 # Overview
 
-The goal of this post is to understand what this syntax and why you would need it.
+The goal of this post is to understand this syntax and why you would need it.
 In order to do so we  will gradually climb the ladder of abstractions and
 answers the following questions : 
 

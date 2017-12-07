@@ -1,10 +1,21 @@
-# Understanding `F[G[_]]` in Scala
+# Understanding `F[_]` in Scala
 
-In order to really understand this syntax, we will define some basic concepts and then relate them together, it should all make sense at the end.
+This very abstract syntax comes up all the time in Scala, 
+I will try to give you an intuition of what it means and how to use it.
 
-DANIEL: let's work on this intro together. Come sit with me sometime. I think we should explain what we're answering, and the structure of the post.
+# Overview
 
-# What is a value?
+The goal of this post is to understand what this syntax and why you would need it.
+In order to do so we  will gradually climb the ladder of abstractions and
+answers the following questions : 
+
+1 - What is a value?
+2 - What is a proper type?
+3 - What is a first-order type ?
+4 - What abstracts over a first-order type ?
+5 - Why do I need `F[_]` ?
+
+# What is a value ?
 
 Values represent raw data. They have the lowest level of abstraction and are the simplest concept that we need to deal with. 
 
@@ -19,7 +30,7 @@ Take a look at the right hand side of these examples - it's just data and it's t
 
 If a child asks you what your funky BigPanda tshirt costs and you answer $12 then they'll understand what you mean. They'll certainly understand the value in your answer (2). But if they ask you what a dollar is then suddenly things get more complicated. Explaining money and currencies is a bit more tricky. This takes us to types.
 
-# What is a proper type?
+# What is a proper type ?
 
 ```scala
 scala> val name = "daniel"
@@ -64,7 +75,7 @@ First-order types are just types (`List`, `Map`, `Array`) that have type constru
 
 Going from proper types to first-order types tooks us up a layer of abstraction. In most programming languages you can't abstract any further. However, Scala let's you got a step further.  Let's take that last step and see where it takes us.
 
-# What abstracts over a first-order type?
+# What abstracts over a first-order type ?
 
 Every step we've taken so far has added an abstraction over the previous abstraction: 
 

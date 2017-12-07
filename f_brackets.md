@@ -9,11 +9,11 @@ The goal of this post is to understand what this syntax and why you would need i
 In order to do so we  will gradually climb the ladder of abstractions and
 answers the following questions : 
 
-1 - What is a value?
-2 - What is a proper type?
-3 - What is a first-order type ?
-4 - What abstracts over a first-order type ?
-5 - Why do I need `F[_]` ?
+- What is a value?
+- What is a proper type?
+- What is a first-order type ?
+- What abstracts over a first-order type ?
+- Why do I need `F[_]` ?
 
 # What is a value ?
 

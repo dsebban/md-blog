@@ -9,8 +9,8 @@ The goal of this post is to understand this syntax and why you would need it.
 In order to do so we  will gradually climb the ladder of abstractions and
 answer the following questions : 
 
-- What is a value?
-- What is a proper type?
+- What is a value ?
+- What is a proper type ?
 - What is a first-order type ?
 - What abstracts over a first-order type ?
 - Why do I need `F[_]` ?

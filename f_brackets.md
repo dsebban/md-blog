@@ -7,7 +7,7 @@ I will try to give you an intuition of what it means and how to use it.
 
 The goal of this post is to understand this syntax and why you would need it.
 In order to do so we  will gradually climb the ladder of abstractions and
-answers the following questions : 
+answer the following questions : 
 
 - What is a value?
 - What is a proper type?

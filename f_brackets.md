@@ -103,7 +103,7 @@ Answer: **A second-order type**
 
 It's a type which abstracts over types which abstract over types!!!
 
-Feel like inception, right? Hopefully you followed until here and everything is starting to fall into place.
+Feels like inception, right? Hopefully you've followed until here and everything is starting to fall into place.
 
 # Higher kinded types
 
@@ -113,10 +113,9 @@ A type with a type constructor (ie. a type with `[_]`) is called a *higher kinde
 
 Let's do a quick analogy between types and functions:
 
-- A type constructor `List[_]` is just a function of type 
+A type constructor `List[_]` is just a function of type:
 
 ```scala
-
 T => List[T]
 
 ```
@@ -130,29 +129,30 @@ String => List[String]
 Given a proper type it will return another proper type you can think about it as 
 a function that works at the type level, a type level function.
 
-But wait we returned only a proper type, what if we return another first order type: 
+But wait - we returned only a proper type. What if we return another first order type? 
 
 
 ```scala
-
 List[_] => WithMap[List[_]]
 
 ```
 
-Or generalized to any **one-hole** type
+Or generalized to any **one slot** type?
 
 ```scala
-
 F[_] => WithMap[F[_]]
 
 ```
 Give a type level function we return another type level function.
 
-Higher order functions are functions that returns functions, in the same
+Higher order functions are functions that returns functions, in the same *** DANIEL: HOW DID YOU WANT TO END THIS? Also, let's clarify the relationship between higher order functions and higher kinded types ***
 
 # The `*` notation 
 
-The type of a type is called kind and uses `*` as notation to communicate what order they are.
+The type of a type is called kind and uses `*` as notation to communicate what order they are. *** DANIEL: COME TALK TO ME ABOUT THIS PHRASING ***
+
+
+*** Daniel: What about making the below section into a table? If not it needs a little formatting work ***
 
 - `String` is of kind `*` and is Order 0
 
@@ -169,11 +169,10 @@ This gives a visual way to talk about the type of types.
 
 # Why do I need `F[_]`?
 
-We abstracted over all the first order types with one hole, we can now
-define common functions between all of them for example:
+Having abstracted over all the first order types with one slot, we can now
+define common functions between all of them. For example:
 
 ```scala
-
 trait WithMap[F[_]] {
 
 def map[A,B](fa: F[A])(f: A => B): F[B]
@@ -182,23 +181,22 @@ def map[A,B](fa: F[A])(f: A => B): F[B]
 
 ```
 
-You can mentally replace `F` by `List` or `Option` or any other first-order types.
+You can mentally replace `F` with `List` or `Option` or any other first-order type.
 This allows us to define a `map` function over all first-order types. 
 
-Yes that's it, it allows us to define functions across a lot of different types in a concise
-way, this is very powerful but is not in the scope of this post. Just remember that now you have a 
-way to talk about a range of types based on how many holes they have and not on what they
-represent (`Option`, `List`) 
+Yes that's it, it allows us to define functions across many different types in a concise
+way. This is very powerful, but we won't discuss the details of how, when and why to do it 
+in this post. Just remember that you now you have a way to talk about a range of types based
+on how many slots they have and not on what they represent (eg. `Option`, `List`) 
 
 
 # Takeaways
 
 - `1`, `"a"`, `List(1,2,3)` are values
 
-- `Int`, `String`, List[Int] are proper types 
+- `Int`, `String`, `List[Int]` are proper types 
 
-- `List[_]`, `Option[_]`  are type constructors, takes a type and construct a new type,
+- `List[_]`, `Option[_]`  are type constructors. They take a type and construct a new type and
 can be generalized with this syntax `F[_]`
 
-- `G[F[_]]` is a type constructor that takes another type constructor like, 
-`Functor[F[_]]`, can be tough of higher order function at type level
+- `G[F[_]]` is a type constructor that takes another type constructor. One example is `Functor[F[_]]`. You can think of them as higher order functions at type level. *** DANIEL: let's work on the last sentence a bit ***

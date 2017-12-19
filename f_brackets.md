@@ -7,15 +7,15 @@ I will try to give you an intuition of what it means and how to use it.
 
 The goal of this post is to understand this syntax and why you would need it.
 In order to do so we  will gradually climb the ladder of abstractions and
-answer the following questions : 
+answer the following questions: 
 
-- What is a value ?
-- What is a proper type ?
-- What is a first-order type ?
-- What abstracts over a first-order type ?
-- Why do I need `F[_]` ?
+- What is a value?
+- What is a proper type?
+- What is a first-order type?
+- What abstracts over a first-order type?
+- Why do I need `F[_]`?
 
-# What is a value ?
+# What is a value?
 
 Values represent raw data. They have the lowest level of abstraction and are the simplest concept that we need to deal with. 
 
@@ -30,7 +30,7 @@ Take a look at the right hand side of these examples - it's just data and it's t
 
 If a child asks you what your funky BigPanda tshirt costs and you answer $12 then they'll understand what you mean. They'll certainly understand the value in your answer (2). But if they ask you what a dollar is then suddenly things get more complicated. Explaining money and currencies is a bit more tricky. This takes us to types.
 
-# What is a proper type ?
+# What is a proper type?
 
 ```scala
 scala> val name = "daniel"
@@ -54,7 +54,7 @@ Proper types are a higher level concept than values. Let's talk about how they a
 
 Moving from values to proper types took us up a level of abstraction. What do we get if we go one higher?
 
-# What is a first-order type ?
+# What is a first-order type?
 
 In the previous example we said that `List[Int]` is a proper type, but what is`List`?
 
@@ -75,7 +75,7 @@ First-order types are just types (`List`, `Map`, `Array`) that have type constru
 
 Going from proper types to first-order types tooks us up a layer of abstraction. In most programming languages you can't abstract any further. However, Scala let's you got a step further.  Let's take that last step and see where it takes us.
 
-# What abstracts over a first-order type ?
+# What abstracts over a first-order type?
 
 Every step we've taken so far has added an abstraction over the previous abstraction: 
 
@@ -99,11 +99,11 @@ Let's forget about `WithMap` for a second to focus on the `F[_]` syntax. `F[_]` 
 
 Now the million dollar question: What is `WithMap`?
 
-Answer : **A second-order type**
+Answer: **A second-order type**
 
 It's a type which abstracts over types which abstract over types!!!
 
-Feel like inception, right? Hopefully you followed until here and everything is starting to fall into place.
+Feels like inception, right? Hopefully you've followed until here and everything is starting to fall into place.
 
 # Higher kinded types
 
@@ -111,12 +111,11 @@ Let's introduce one more piece of terminology, and then try and clarify how ever
 
 A type with a type constructor (ie. a type with `[_]`) is called a *higher kinded type*. A type constructor is just a function that takes a type and returns a type.
 
-Let's do a quick analogy between types and functions :
+Let's do a quick analogy between types and functions:
 
-- A type constructor `List[_]` is just a function of type 
+A type constructor `List[_]` is just a function of type:
 
 ```scala
-
 T => List[T]
 
 ```
@@ -130,29 +129,30 @@ String => List[String]
 Given a proper type it will return another proper type you can think about it as 
 a function that works at the type level, a type level function.
 
-But wait we returned only a proper type, what if we return another first order type : 
+But wait - we returned only a proper type. What if we return another first order type? 
 
 
 ```scala
-
 List[_] => WithMap[List[_]]
 
 ```
 
-Or generalized to any **one-hole** type
+Or generalized to any **one slot** type?
 
 ```scala
-
 F[_] => WithMap[F[_]]
 
 ```
 Give a type level function we return another type level function.
 
-Higher order functions are functions that returns functions, in the same
+Higher order functions are functions that returns functions, in the same *** DANIEL: HOW DID YOU WANT TO END THIS? Also, let's clarify the relationship between higher order functions and higher kinded types ***
 
 # The `*` notation 
 
-The type of a type is called kind and uses `*` as notation to communicate what order they are.
+The type of a type is called kind and uses `*` as notation to communicate what order they are. *** DANIEL: COME TALK TO ME ABOUT THIS PHRASING ***
+
+
+*** Daniel: What about making the below section into a table? If not it needs a little formatting work ***
 
 - `String` is of kind `*` and is Order 0
 
@@ -162,18 +162,17 @@ The type of a type is called kind and uses `*` as notation to communicate what o
 - `Map[_,_]` is of kind: `* -> * -> *` (takes two types and produce a proper type, Order 1) 
   takes a `String,Int` and produce a Map[String,Int]
 
-- `WithMap[F[_]]`  of kind : `(* -> *) -> *` (take a Order 1 type `(* -> *)` and produce a proper type, Order 2)
+- `WithMap[F[_]]`  of kind: `(* -> *) -> *` (take a Order 1 type `(* -> *)` and produce a proper type, Order 2)
 
 This gives a visual way to talk about the type of types.
 
 
-# Why do I need `F[_]` ?
+# Why do I need `F[_]`?
 
-We abstracted over all the first order types with one hole, we can now
-define common functions between all of them for example :
+Having abstracted over all the first order types with one slot, we can now
+define common functions between all of them. For example:
 
 ```scala
-
 trait WithMap[F[_]] {
 
 def map[A,B](fa: F[A])(f: A => B): F[B]
@@ -182,23 +181,22 @@ def map[A,B](fa: F[A])(f: A => B): F[B]
 
 ```
 
-You can mentally replace `F` by `List` or `Option` or any other first-order types.
+You can mentally replace `F` with `List` or `Option` or any other first-order type.
 This allows us to define a `map` function over all first-order types. 
 
-Yes that's it, it allows us to define functions across a lot of different types in a concise
-way, this is very powerful but is not in the scope of this post. Just remember that now you have a 
-way to talk about a range of types based on how many holes they have and not on what they
-represent (`Option`, `List`) 
+Yes that's it, it allows us to define functions across many different types in a concise
+way. This is very powerful, but we won't discuss the details of how, when and why to do it 
+in this post. Just remember that you now you have a way to talk about a range of types based
+on how many slots they have and not on what they represent (eg. `Option`, `List`) 
 
 
 # Takeaways
 
 - `1`, `"a"`, `List(1,2,3)` are values
 
-- `Int`, `String`, List[Int] are proper types 
+- `Int`, `String`, `List[Int]` are proper types 
 
-- `List[_]`, `Option[_]`  are type constructors, takes a type and construct a new type,
+- `List[_]`, `Option[_]`  are type constructors. They take a type and construct a new type and
 can be generalized with this syntax `F[_]`
 
-- `G[F[_]]` is a type constructor that takes another type constructor like, 
-`Functor[F[_]]`, can be tough of higher order function at type level
+- `G[F[_]]` is a type constructor that takes another type constructor. One example is `Functor[F[_]]`. You can think of them as higher order functions at type level. *** DANIEL: let's work on the last sentence a bit ***

@@ -7,15 +7,15 @@ I will try to give you an intuition of what it means and how to use it.
 
 The goal of this post is to understand this syntax and why you would need it.
 In order to do so we  will gradually climb the ladder of abstractions and
-answer the following questions : 
+answer the following questions: 
 
-- What is a value ?
-- What is a proper type ?
-- What is a first-order type ?
-- What abstracts over a first-order type ?
-- Why do I need `F[_]` ?
+- What is a value?
+- What is a proper type?
+- What is a first-order type?
+- What abstracts over a first-order type?
+- Why do I need `F[_]`?
 
-# What is a value ?
+# What is a value?
 
 Values represent raw data. They have the lowest level of abstraction and are the simplest concept that we need to deal with. 
 
@@ -30,7 +30,7 @@ Take a look at the right hand side of these examples - it's just data and it's t
 
 If a child asks you what your funky BigPanda tshirt costs and you answer $12 then they'll understand what you mean. They'll certainly understand the value in your answer (2). But if they ask you what a dollar is then suddenly things get more complicated. Explaining money and currencies is a bit more tricky. This takes us to types.
 
-# What is a proper type ?
+# What is a proper type?
 
 ```scala
 scala> val name = "daniel"
@@ -54,7 +54,7 @@ Proper types are a higher level concept than values. Let's talk about how they a
 
 Moving from values to proper types took us up a level of abstraction. What do we get if we go one higher?
 
-# What is a first-order type ?
+# What is a first-order type?
 
 In the previous example we said that `List[Int]` is a proper type, but what is`List`?
 
@@ -75,7 +75,7 @@ First-order types are just types (`List`, `Map`, `Array`) that have type constru
 
 Going from proper types to first-order types tooks us up a layer of abstraction. In most programming languages you can't abstract any further. However, Scala let's you got a step further.  Let's take that last step and see where it takes us.
 
-# What abstracts over a first-order type ?
+# What abstracts over a first-order type?
 
 Every step we've taken so far has added an abstraction over the previous abstraction: 
 
@@ -99,7 +99,7 @@ Let's forget about `WithMap` for a second to focus on the `F[_]` syntax. `F[_]` 
 
 Now the million dollar question: What is `WithMap`?
 
-Answer : **A second-order type**
+Answer: **A second-order type**
 
 It's a type which abstracts over types which abstract over types!!!
 
@@ -111,7 +111,7 @@ Let's introduce one more piece of terminology, and then try and clarify how ever
 
 A type with a type constructor (ie. a type with `[_]`) is called a *higher kinded type*. A type constructor is just a function that takes a type and returns a type.
 
-Let's do a quick analogy between types and functions :
+Let's do a quick analogy between types and functions:
 
 - A type constructor `List[_]` is just a function of type 
 
@@ -130,7 +130,7 @@ String => List[String]
 Given a proper type it will return another proper type you can think about it as 
 a function that works at the type level, a type level function.
 
-But wait we returned only a proper type, what if we return another first order type : 
+But wait we returned only a proper type, what if we return another first order type: 
 
 
 ```scala
@@ -162,15 +162,15 @@ The type of a type is called kind and uses `*` as notation to communicate what o
 - `Map[_,_]` is of kind: `* -> * -> *` (takes two types and produce a proper type, Order 1) 
   takes a `String,Int` and produce a Map[String,Int]
 
-- `WithMap[F[_]]`  of kind : `(* -> *) -> *` (take a Order 1 type `(* -> *)` and produce a proper type, Order 2)
+- `WithMap[F[_]]`  of kind: `(* -> *) -> *` (take a Order 1 type `(* -> *)` and produce a proper type, Order 2)
 
 This gives a visual way to talk about the type of types.
 
 
-# Why do I need `F[_]` ?
+# Why do I need `F[_]`?
 
 We abstracted over all the first order types with one hole, we can now
-define common functions between all of them for example :
+define common functions between all of them for example:
 
 ```scala
 

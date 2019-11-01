@@ -28,7 +28,7 @@ val oneAndTwoInAList = List(1,2)
 
 Take a look at the right hand side of these examples - it's just data and it's trivial to understand.
 
-If a child asks you what your funky BigPanda tshirt costs and you answer $12 then they'll understand what you mean. They'll certainly understand the value in your answer (2). But if they ask you what a dollar is then suddenly things get more complicated. Explaining money and currencies is a bit more tricky. This takes us to types.
+If a child asks you what your funky BigPanda tshirt costs and you answer $12 then they'll understand what you mean. They'll certainly understand the value in your answer (12). But if they ask you what a dollar is then suddenly things get more complicated. Explaining money and currencies is a bit more tricky. This takes us to types.
 
 # What is a proper type ?
 
@@ -163,6 +163,7 @@ The type of a type is called kind and uses `*` as notation to communicate what o
   takes a `String,Int` and produce a Map[String,Int]
 
 - `WithMap[F[_]]`  of kind : `(* -> *) -> *` (take a Order 1 type `(* -> *)` and produce a proper type, Order 2)
+   takes a List[Int] and produce WithMap[List[Int]]
 
 This gives a visual way to talk about the type of types.
 
